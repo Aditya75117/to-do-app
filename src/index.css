@@ -104,7 +104,7 @@ body * {
   border-top-right-radius:11px
 }
 .td{
-  @apply text-base text-slate-500 bg-white dark:bg-slate-600 dark:text-white/70
+  @apply text-base text-slate-500 bg-white dark:bg-slate-600 dark:text-white/70 capitalize
 }
 .no-item-card{
   @apply flex flex-col gap-3 text-center py-10;

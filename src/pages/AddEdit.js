@@ -2,7 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const AddEdit = () => {
+const AddEdit = (id) => {
+
+  console.log(id,"id");
 
   const location = useLocation();
   const receivedData = location.state;

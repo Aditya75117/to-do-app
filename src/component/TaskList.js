@@ -5,9 +5,13 @@ import { useNavigate } from 'react-router-dom';
 
 
 const TaskList = ({taskItems, filteredList}) => {
+    
     const navigate = useNavigate();
-    const handleTaskEdit = (e, data) => {
-        navigate("/add-new", { state: data });
+    const handleTaskEdit = (id) => {
+        // navigate("/add-new", { state: id });
+        console.log(id,"iddd");
+        
+        navigate(`/add-new?edit=${id}`);
       }
     return(
         <>
@@ -28,18 +32,18 @@ const TaskList = ({taskItems, filteredList}) => {
                         {
                             filteredList === 'all' ?
                             (
-                                taskItems && taskItems.length > 0 ?
-                                taskItems?.map((item,i)=>(
+                                taskItems.list && taskItems.list.length > 0 ?
+                                taskItems.list?.map((item,i)=>(
                                 <tr key={i} className="tr">
-                                    <td className="td">{item.name}</td>
-                                    <td className="td">{item.description}</td>
-                                    <td className="td">{item.type}</td>
-                                    <td className="td">{item.priority}</td>
-                                    <td className="td">{item.status}</td>
+                                    <td className="td">{item.taskName}</td>
+                                    <td className="td">{item.taskDescription}</td>
+                                    <td className="td">{item.taskType}</td>
+                                    <td className="td">{item.taskPriority}</td>
+                                    <td className="td">{item.taskStatus}</td>
                                     <td className="td">{item.createdAt}</td>
                                     <td className="td">
                                         <div className='flex gap-2 justify-center'>
-                                            <button className="task-action-btn edit" type="button" onClick={()=> handleTaskEdit(i, item)}>
+                                            <button className="task-action-btn edit" type="button" onClick={()=> handleTaskEdit(item.taskId)}>
                                                 <img src={Edit} alt="edit" className="action-icon max-w-6"/>
                                             </button>
                                             <button className="task-action-btn delete" type="button">
@@ -62,15 +66,15 @@ const TaskList = ({taskItems, filteredList}) => {
                             )
                             :
                             (
-                                taskItems && taskItems.filter((key) => key.status === filteredList).length > 0 ? (
-                                    taskItems?.filter((key)=> key.status  === filteredList)?.map((item,i)=>
+                                taskItems.list && taskItems.list.filter((key) => key.status === filteredList).length > 0 ? (
+                                    taskItems.list?.filter((key)=> key.status  === filteredList)?.map((item,i)=>
                                     (
                                     <tr key={i} className="tr">
-                                        <td className="td">{item.name}</td>
-                                        <td className="td">{item.description}</td>
-                                        <td className="td">{item.type}</td>
-                                        <td className="td">{item.priority}</td>
-                                        <td className="td">{item.status}</td>
+                                        <td className="td">{item.taskName}</td>
+                                        <td className="td">{item.taskDescription}</td>
+                                        <td className="td">{item.taskType}</td>
+                                        <td className="td">{item.taskPriority}</td>
+                                        <td className="td">{item.taskStatus}</td>
                                         <td className="td">{item.createdAt}</td>
                                         <td className="td">
                                             <div className='flex gap-2 justify-center'>
