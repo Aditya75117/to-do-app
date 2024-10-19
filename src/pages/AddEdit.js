@@ -1,14 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-const AddEdit = (id) => {
+const AddEdit = ({list}) => {
 
-  console.log(id,"id");
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get('edit');
 
-  const location = useLocation();
-  const receivedData = location.state;
-  
+    const addApi = 'http://localhost:3333/api/tasks';
+    const editApi = `http://localhost:3333/api/tasks/${Number(id)}`
+
+    useEffect(() => {
+     const record = list.find(re => re.taskId === Number(id));
+      if(id){
+        setFormData(record);
+
+      }
+    }, [id, list]); 
+
     const [formData, setFormData] = useState({
       taskName: '',
       taskDescription: '',
@@ -34,7 +43,7 @@ const AddEdit = (id) => {
     
     const validateForm = () => {
       const newErrors = {};
-      if (!formData.taskName) newErrors.name = 'Name is required';
+      if (!formData?.taskName) newErrors.name = 'Name is required';
       if (!formData.taskDescription) newErrors.description = 'Description is required';
       if (!formData.taskType) newErrors.type = 'Type is required';
       if (!formData.taskPriority) newErrors.priority = 'Priority is required';
@@ -55,12 +64,16 @@ const AddEdit = (id) => {
           setErrors(validationErrors);
       } else {
           try {
-            const response = await axios.post('http://localhost:3333/api/tasks', updatedFormData);
+            const response = id 
+            ? 
+            await axios.patch(editApi, updatedFormData)
+            :
+            await axios.post(addApi, updatedFormData);
 
               console.log('Task added successfully:', response.data);
   
               // Optionally save to local storage
-              localStorage.setItem('formData', JSON.stringify(updatedFormData));
+              // localStorage.setItem('formData', JSON.stringify(updatedFormData));
   
               // Reset form data
               setFormData({
@@ -77,12 +90,6 @@ const AddEdit = (id) => {
           }
       }
   };
-    
-    useEffect(() => {
-      if(receivedData)  {
-        setFormData(receivedData)
-      }
-    },[]);
    
   return (
     <section className="new-item-wrpr h-full">
@@ -95,7 +102,7 @@ const AddEdit = (id) => {
               type="text"
               id="name"
               name="taskName"
-              value={formData.taskName}
+              value={formData?.taskName}
               onChange={handleChange}
               className="input f-in"
             />
@@ -107,7 +114,7 @@ const AddEdit = (id) => {
             <textarea
               id="description"
               name="taskDescription"
-              value={formData.taskDescription}
+              value={formData?.taskDescription}
               onChange={handleChange}
               className="textarea f-in"
             />
@@ -120,7 +127,7 @@ const AddEdit = (id) => {
               <select
                 id="type"
                 name="taskType"
-                value={formData.taskType}
+                value={formData?.taskType}
                 onChange={handleChange}
                 className="select f-in"
               >
@@ -137,7 +144,7 @@ const AddEdit = (id) => {
               <select
                 id="priority"
                 name="taskPriority"
-                value={formData.taskPriority}
+                value={formData?.taskPriority}
                 onChange={handleChange}
                 className="select f-in"
               >
@@ -154,7 +161,7 @@ const AddEdit = (id) => {
               <select
                 id="status"
                 name="taskStatus"
-                value={formData.taskStatus}
+                value={formData?.taskStatus}
                 onChange={handleChange}
                 className="select f-in"
               >

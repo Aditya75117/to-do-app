@@ -8,9 +8,6 @@ const TaskList = ({taskItems, filteredList}) => {
     
     const navigate = useNavigate();
     const handleTaskEdit = (id) => {
-        // navigate("/add-new", { state: id });
-        console.log(id,"iddd");
-        
         navigate(`/add-new?edit=${id}`);
       }
     return(
